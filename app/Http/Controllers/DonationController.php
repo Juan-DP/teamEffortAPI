@@ -2,60 +2,53 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Team;
+use App\Models\Donation;
+use App\Models\Challenge;
 use Illuminate\Http\Request;
+use App\Http\Requests\Donation\ShowDonationRequest;
+use App\Http\Requests\Donation\CreateDonationRequest;
 
 class DonationController extends Controller
 {
     /**
-     * Get all the challenges
+     * Get a donation by its uid
      *
-     * @param Request $request
+     * @param ShowDonationRequest $request
      * @return mixed
      * @throws conditon
      **/
-    public function index(Request $request)
+    public function show(ShowDonationRequest $request)
     {
         try {
-            //code...
+            return Donation::firstWhere('udid', $request->udid);
         } catch (\Throwable $th) {
             //throw $th;
         }
     }
 
     /**
-     * Get a challenge by its uid
+     * Create a donation
      *
-     * @param Request $request
+     * @param CreateDonationRequest $request
      * @return mixed
      * @throws conditon
      **/
-    public function show(Request $request)
+    public function create(CreateDonationRequest $request)
     {
         try {
-            //code...
+            $team = Team::firstWhere('utid', $request->utid);
+            $challenge = Challenge::firstWhere('uchid', $request->uchid);
+            $amount = number_format($request->amount, 8, '.', '');
+            
+            return Donation::create(['team_id' => $team->id, 'challenge_id' => $challenge->id, 'amount' => $amount]);
         } catch (\Throwable $th) {
             //throw $th;
         }
     }
 
     /**
-     * Create a challenge
-     *
-     * @param Request $request
-     * @return mixed
-     * @throws conditon
-     **/
-    public function create(Request $request)
-    {
-        try {
-            //code...
-        } catch (\Throwable $th) {
-            //throw $th;
-        }
-    }
-
-    /**
-     * Update a challenge.
+     * Update a donation.
      *
      * @param Request $request
      * @return mixed
@@ -71,7 +64,7 @@ class DonationController extends Controller
     }
 
     /**
-     * Delete a challenge.
+     * Delete a donation.
      *
      * @param Request $request
      * @return mixed

@@ -2,37 +2,46 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Team;
+use App\Models\Challenge;
 use Illuminate\Http\Request;
+use App\Models\TeamChallenge;
+use Illuminate\Support\Carbon;
+use App\Http\Requests\Challenge\ShowChallengeRequest;
+use App\Http\Requests\Challenge\IndexChallengeRequest;
+use App\Http\Requests\Challenge\CreateChallengeRequest;
+use App\Http\Requests\Challenge\UpdateChallengeRequest;
 
 class ChallengeController extends Controller
 {
     /**
      * Get all the challenges
      *
-     * @param Request $request
+     * @param IndexChallengeRequest $request
      * @return mixed
      * @throws conditon
      **/
-    public function index(Request $request)
+    public function index(IndexChallengeRequest $request)
     {
         try {
-            //code...
+            return Challenge::all();
         } catch (\Throwable $th) {
             //throw $th;
+            //TODO - Implement request returns
         }
     }
 
     /**
      * Get a challenge by its uid
      *
-     * @param Request $request
+     * @param ShowChallengeRequest $request
      * @return mixed
      * @throws conditon
      **/
-    public function show(Request $request)
+    public function show(ShowChallengeRequest $request)
     {
         try {
-            //code...
+            return Challenge::firstWhere('uchid', $request->uchid);
         } catch (\Throwable $th) {
             //throw $th;
         }
@@ -41,14 +50,28 @@ class ChallengeController extends Controller
     /**
      * Create a challenge
      *
-     * @param Request $request
+     * @param CreateChallengeRequest $request
      * @return mixed
      * @throws conditon
      **/
-    public function create(Request $request)
+    public function create(CreateChallengeRequest $request)
     {
         try {
-            //code...
+            $user = auth()->user();
+            $existingTeam = TeamChallenge::where('created_by', $user->uuid);
+
+            $challenge = Challenge::create([
+                'ucid' => $request->ucid,
+                'ending_at' => Carbon::now()->addDays($request->ending_at)
+            ]);
+
+            if ($existingTeam->doesntExist) {
+                $newTeam = Team::create(['uchid' => $challenge->uchid, 'name' => $user->name]);
+                TeamChallenge::create(['uchid' => $challenge->uchid, 'utid' => $newTeam->utid]);
+            } else {
+                TeamChallenge::create(['uchid' => $challenge->uchid, 'utid' => $existingTeam->utid]);
+            }
+            
         } catch (\Throwable $th) {
             //throw $th;
         }
@@ -57,14 +80,14 @@ class ChallengeController extends Controller
     /**
      * Update a challenge.
      *
-     * @param Request $request
+     * @param UpdateChallengeRequest $request
      * @return mixed
      * @throws conditon
      **/
-    public function update(Request $request)
+    public function update(UpdateChallengeRequest $request)
     {
         try {
-            //code...
+            return Challenge::firstWhere('uchid', $request->uchid)->update($request);
         } catch (\Throwable $th) {
             //throw $th;
         }
@@ -80,7 +103,7 @@ class ChallengeController extends Controller
     public function delete(Request $request)
     {
         try {
-            //code...
+            return Challenge::firstWhere('uchid', $request->uchid)->delete();
         } catch (\Throwable $th) {
             //throw $th;
         }

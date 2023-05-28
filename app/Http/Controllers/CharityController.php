@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Charity;
 use Illuminate\Http\Request;
+use App\Http\Requests\Charity\CreateCharityRequest;
+use App\Http\Requests\Charity\DeleteCharityRequest;
 
 class CharityController extends Controller
 {
     /**
-     * Get all the challenges
+     * Get all the charities
      *
      * @param Request $request
      * @return mixed
@@ -23,7 +26,7 @@ class CharityController extends Controller
     }
 
     /**
-     * Get a challenge by its uid
+     * Get a charity by its uid
      *
      * @param Request $request
      * @return mixed
@@ -39,23 +42,23 @@ class CharityController extends Controller
     }
 
     /**
-     * Create a challenge
+     * Create a charity
      *
-     * @param Request $request
+     * @param CreateCharityRequest $request
      * @return mixed
      * @throws conditon
      **/
-    public function create(Request $request)
+    public function create(CreateCharityRequest $request)
     {
         try {
-            //code...
+            return Charity::create($request);
         } catch (\Throwable $th) {
             //throw $th;
         }
     }
 
     /**
-     * Update a challenge.
+     * Update a charity.
      *
      * @param Request $request
      * @return mixed
@@ -71,16 +74,19 @@ class CharityController extends Controller
     }
 
     /**
-     * Delete a challenge.
+     * Delete a charity.
      *
-     * @param Request $request
+     * @param DeleteCharityRequest $request
      * @return mixed
      * @throws conditon
      **/
-    public function delete(Request $request)
+    public function delete(DeleteCharityRequest $request)
     {
         try {
-            //code...
+            $targetCharity = Charity::firstWhere('uchid', $request->uchid);
+            $targetCharity->delete();
+
+            return $targetCharity->utid;
         } catch (\Throwable $th) {
             //throw $th;
         }

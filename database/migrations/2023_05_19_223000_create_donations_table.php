@@ -17,7 +17,7 @@ return new class extends Migration
             $table->foreignId('team_id')->constrained('teams');
             $table->foreignId('user_id')->constrained('users');
             $table->foreignId('challenge_id')->constrained('challenges');
-            $table->decimal('amount', 8, 8);
+            $table->decimal('amount', 24, 8);
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
             $table->softDeletes();

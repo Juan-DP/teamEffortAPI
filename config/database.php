@@ -148,4 +148,6 @@ return [
 
     ],
 
+    'max_decimal_value' => 999999999999999999999999.99999999,
+    'max_decimal_value' => 1,
 ];

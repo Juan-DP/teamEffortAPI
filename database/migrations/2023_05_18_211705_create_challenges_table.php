@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->uuid('uchid')->unique();
             $table->foreignId('charity_id')->constrained('charities');
-            $table->timestamp('ending_at')->useCurrent();
+            $table->timestamp('ending_at');
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
             $table->softDeletes();
