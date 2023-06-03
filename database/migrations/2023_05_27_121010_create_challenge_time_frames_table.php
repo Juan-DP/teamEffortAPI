@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('challenge_time_frames', function (Blueprint $table) {
             $table->id();
-            $table->int('days');
+            $table->integer('days');
             $table->timestamps();
         });
     }

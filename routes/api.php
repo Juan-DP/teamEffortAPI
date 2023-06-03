@@ -1,11 +1,12 @@
 <?php
 
-use App\Http\Controllers\ChallengeController;
-use App\Http\Controllers\CharityController;
-use App\Http\Controllers\DonationController;
-use App\Http\Controllers\TeamController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\TeamController;
+use App\Http\Controllers\SocialController;
+use App\Http\Controllers\CharityController;
+use App\Http\Controllers\DonationController;
+use App\Http\Controllers\ChallengeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,7 +23,15 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::apiResource('challenge', ChallengeController::class);
-Route::apiResource('charity', CharityController::class);
-Route::apiResource('donation', DonationController::class);
-Route::apiResource('team', TeamController::class);
+
+Route::group(['middleware' => ['web']], function () {
+    Route::prefix('auth')->group(function () {
+        Route::get('facebook', [SocialController::class, 'facebookRedirect']);
+        Route::get('facebook/callback', [SocialController::class, 'loginWithFacebook']);
+    });
+
+    Route::apiResource('challenge', ChallengeController::class);
+    Route::apiResource('charity', CharityController::class);
+    Route::apiResource('donation', DonationController::class);
+    Route::apiResource('team', TeamController::class);
+});

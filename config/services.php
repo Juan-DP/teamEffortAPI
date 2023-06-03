@@ -31,4 +31,16 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
+    'facebook' => [
+        'client_id' => '1407322073385185',
+        'client_secret' => 'a0d8cb3555bc39774e64aded7797cff7',
+        'redirect' => 'http://localhost:8000/auth/facebook/callback',
+    ],
+    
+    'twitter' => [
+        'client_id' => 'L9FWyXN5ordPSxofBDhoKKLLV',
+        'client_secret' => '38n0ShMXY78jRPYBER5JdLhvytIsqJZWgFBURzo4HxYvcAch6K',
+        'redirect' => 'http://localhost:8000/auth/twitter/callback',
+    ],
+    
 ];

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\SocialController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,4 +16,17 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
+});
+
+Route::prefix('auth')->group(function () {
+    //Facebook
+    Route::prefix('facebook')->group(function () {
+        Route::get('/', [SocialController::class, 'facebookRedirect']);
+        Route::get('callback', [SocialController::class, 'loginWithFacebook']);
+    });
+    //Twitter
+    Route::prefix('twitter')->group(function () {
+        Route::get('/', [SocialController::class, 'twitterRedirect']);
+        Route::get('callback', [SocialController::class, 'loginWithTwitter']);
+    });
 });
