@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 use Exception;
 use App\Models\User;
+use Illuminate\Http\Request;
+use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Support\Facades\Auth;
+
 use Laravel\Socialite\Facades\Socialite;
 
 class SocialController extends Controller
@@ -58,7 +61,6 @@ class SocialController extends Controller
 
             if ($isUser) {
                 Auth::login($isUser);
-                $isUser->createToken('AccessToken')->accessToken;
                 return redirect('/dashboard');
             } else {
                 $createUser = User::create([
@@ -68,12 +70,20 @@ class SocialController extends Controller
                 ]);
     
                 Auth::login($createUser);
-                $createUser->createToken('AccessToken')->accessToken;
-                return redirect('/dashboard');
             }
     
         } catch (Exception $exception) {
-            dd($exception->getMessage());
+            throw new Exception("Authentication error. (Error code: xSC001)");
         }
+    }
+
+    public function logout(Request $request)
+    {
+        Auth::logout();
+
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return redirect('/');
     }
 }

@@ -32,15 +32,15 @@ return [
     ],
 
     'facebook' => [
-        'client_id' => '1407322073385185',
-        'client_secret' => 'a0d8cb3555bc39774e64aded7797cff7',
-        'redirect' => 'http://localhost:8000/auth/facebook/callback',
+        'client_id' => env('FACEBOOK_CLIENT_ID'),
+        'client_secret' => env('FACEBOOK_CLIENT_SECRET'),
+        'redirect' => env('FACEBOOK_REDIRECT_URI'),
     ],
     
     'twitter' => [
-        'client_id' => 'L9FWyXN5ordPSxofBDhoKKLLV',
-        'client_secret' => '38n0ShMXY78jRPYBER5JdLhvytIsqJZWgFBURzo4HxYvcAch6K',
-        'redirect' => 'http://localhost:8000/auth/twitter/callback',
+        'client_id' => env('TWITTER_CLIENT_ID'),
+        'client_secret' => env('TWITTER_CLIENT_SECRET'),
+        'redirect' => env('TWITTER_REDIRECT_URI'),
     ],
     
 ];

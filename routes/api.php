@@ -19,15 +19,20 @@ use App\Http\Controllers\ChallengeController;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
 
-Route::group(['middleware' => ['web']], function () {
+Route::group(['middleware' => ['api']], function () {
     Route::prefix('auth')->group(function () {
         Route::get('facebook', [SocialController::class, 'facebookRedirect']);
         Route::get('facebook/callback', [SocialController::class, 'loginWithFacebook']);
+        
+        Route::get('twitter', [SocialController::class, 'twitterRedirect']);
+        Route::get('twitter/callback', [SocialController::class, 'loginWithTwitter']);
+
+        Route::post('/logout', [SocialController::class, 'logout']);
     });
 
     Route::apiResource('challenge', ChallengeController::class);
