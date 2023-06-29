@@ -42,7 +42,7 @@ class SocialController extends Controller
             }
     
         } catch (Exception $exception) {
-            dd($exception->getMessage());
+            throw new Exception("Authentication error. (Error code: xSC001)");
         }
     }
 
@@ -73,7 +73,7 @@ class SocialController extends Controller
             }
     
         } catch (Exception $exception) {
-            throw new Exception("Authentication error. (Error code: xSC001)");
+            throw new Exception("Authentication error. (Error code: xSC002)");
         }
     }
 

@@ -10,7 +10,9 @@ use Illuminate\Support\Carbon;
 use App\Http\Requests\Challenge\ShowChallengeRequest;
 use App\Http\Requests\Challenge\IndexChallengeRequest;
 use App\Http\Requests\Challenge\CreateChallengeRequest;
+use App\Http\Requests\Challenge\DeleteChallengeRequest;
 use App\Http\Requests\Challenge\UpdateChallengeRequest;
+use Exception;
 
 class ChallengeController extends Controller
 {
@@ -26,8 +28,7 @@ class ChallengeController extends Controller
         try {
             return Challenge::all();
         } catch (\Throwable $th) {
-            //throw $th;
-            //TODO - Implement request returns
+            throw new Exception("An error occurred fetching the challenges. (Error code: xCHC001)");
         }
     }
 
@@ -43,7 +44,7 @@ class ChallengeController extends Controller
         try {
             return Challenge::firstWhere('uchid', $request->uchid);
         } catch (\Throwable $th) {
-            //throw $th;
+            throw new Exception("An error occurred fetching the challenge. (Error code: xCHC002)");
         }
     }
 
@@ -73,7 +74,7 @@ class ChallengeController extends Controller
             }
             
         } catch (\Throwable $th) {
-            //throw $th;
+            throw new Exception("An error occurred creating the challenge. (Error code: xCHC003)");
         }
     }
 
@@ -89,7 +90,7 @@ class ChallengeController extends Controller
         try {
             return Challenge::firstWhere('uchid', $request->uchid)->update($request);
         } catch (\Throwable $th) {
-            //throw $th;
+            throw new Exception("An error occurred updating the challenge. (Error code: xCHC004)");
         }
     }
 
@@ -100,12 +101,12 @@ class ChallengeController extends Controller
      * @return mixed
      * @throws conditon
      **/
-    public function delete(Request $request)
+    public function delete(DeleteChallengeRequest $request)
     {
         try {
             return Challenge::firstWhere('uchid', $request->uchid)->delete();
         } catch (\Throwable $th) {
-            //throw $th;
+            throw new Exception("An error occurred fetching the challenge. (Error code: xCHC005)");
         }
     }
 }

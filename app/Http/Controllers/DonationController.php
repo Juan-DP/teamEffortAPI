@@ -8,6 +8,7 @@ use App\Models\Challenge;
 use Illuminate\Http\Request;
 use App\Http\Requests\Donation\ShowDonationRequest;
 use App\Http\Requests\Donation\CreateDonationRequest;
+use Exception;
 
 class DonationController extends Controller
 {
@@ -23,7 +24,7 @@ class DonationController extends Controller
         try {
             return Donation::firstWhere('udid', $request->udid);
         } catch (\Throwable $th) {
-            //throw $th;
+            throw new Exception("An error occurred fetching the donation. (Error code: xDC001)");
         }
     }
 
@@ -43,7 +44,7 @@ class DonationController extends Controller
             
             return Donation::create(['team_id' => $team->id, 'challenge_id' => $challenge->id, 'amount' => $amount]);
         } catch (\Throwable $th) {
-            //throw $th;
+            throw new Exception("An error occurred creating the donation. (Error code: xDC002)");
         }
     }
 
@@ -75,7 +76,7 @@ class DonationController extends Controller
         try {
             //code...
         } catch (\Throwable $th) {
-            //throw $th;
+            //throw $th;s
         }
     }
 }

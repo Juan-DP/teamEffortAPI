@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Team\CreateTeamRequest;
+use App\Models\Team;
+use Exception;
 use Illuminate\Http\Request;
 
 class TeamController extends Controller
@@ -45,12 +48,12 @@ class TeamController extends Controller
      * @return mixed
      * @throws conditon
      **/
-    public function create(Request $request)
+    public function create(CreateTeamRequest $request)
     {
         try {
-            //code...
+            return Team::create($request);
         } catch (\Throwable $th) {
-            //throw $th;
+            throw new Exception("An error occurred creating the team. (Error code: xTC001)");
         }
     }
 

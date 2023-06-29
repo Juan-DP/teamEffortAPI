@@ -6,6 +6,9 @@ use App\Models\Charity;
 use Illuminate\Http\Request;
 use App\Http\Requests\Charity\CreateCharityRequest;
 use App\Http\Requests\Charity\DeleteCharityRequest;
+use App\Http\Requests\Charity\ShowCharityRequest;
+use App\Http\Requests\Charity\UpdateCharityRequest;
+use Exception;
 
 class CharityController extends Controller
 {
@@ -19,9 +22,9 @@ class CharityController extends Controller
     public function index(Request $request)
     {
         try {
-            //code...
+            return Charity::all();
         } catch (\Throwable $th) {
-            //throw $th;
+            throw new Exception("An error occurred fetching the charities. (Error code: xCC001)");
         }
     }
 
@@ -32,12 +35,12 @@ class CharityController extends Controller
      * @return mixed
      * @throws conditon
      **/
-    public function show(Request $request)
+    public function show(ShowCharityRequest $request)
     {
         try {
-            //code...
+            return Charity::firstWhere('ucid', $request->ucid);
         } catch (\Throwable $th) {
-            //throw $th;
+            throw new Exception("An error occurred fetching the charity. (Error code: xCC002)");
         }
     }
 
@@ -53,7 +56,7 @@ class CharityController extends Controller
         try {
             return Charity::create($request);
         } catch (\Throwable $th) {
-            //throw $th;
+            throw new Exception("An error occurred creating the charity. (Error code: xCC003)");
         }
     }
 
@@ -64,12 +67,15 @@ class CharityController extends Controller
      * @return mixed
      * @throws conditon
      **/
-    public function update(Request $request)
+    public function update(UpdateCharityRequest $request)
     {
         try {
-            //code...
+            $charity = Charity::firstWhere('ucid', $request->ucid);
+            $charity->update($request);
+
+            return $charity;
         } catch (\Throwable $th) {
-            //throw $th;
+            throw new Exception("An error occurred updating the charity. (Error code: xCC004)");
         }
     }
 
@@ -88,7 +94,7 @@ class CharityController extends Controller
 
             return $targetCharity->utid;
         } catch (\Throwable $th) {
-            //throw $th;
+            throw new Exception("An error occurred deleting the charity. (Error code: xCC005)");
         }
     }
 }
